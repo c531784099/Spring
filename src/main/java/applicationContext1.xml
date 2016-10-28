@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<!-- spring 中的对象的产生默认的是单例singleton   prototype是多例的 -->
+	<!-- 单例的不会有懒加载、启动spring容器就会加载、多例的只有到使用的时候才会创建对象。 -->
+	<bean id="userdao" class="com.bjsxt.daoimp.UserDaoImp" scope="singleton">
+	   <property name="type" value="person"></property>
+	   <property name="uid" value="1000"></property>
+	   
+	</bean>
+    <bean id="userservice" class="com.bjsxt.serviceimp.ServiceImp">
+    <!-- 属性注入 在本地种需要有  set、get方法 -->
+      <property name="ud" ref="userdao"></property>  
+      <property name="list1">
+        <list>
+         <ref local="userdao"/>
+         <value >cheng</value>
+        </list>
+      </property>
+      <property name="set1">
+        <set>
+          <ref local="userdao"/>
+          <value>wang</value>
+          <bean class="java.util.Date"></bean>
+        </set>
+      
+      </property>
+      <property name="map1">
+       <map>
+         <entry>
+            <key><value>k1</value></key>
+           <value>feng</value>
+         
+         </entry>
+         <entry>
+           <key><value>k2</value></key>
+           <ref local="userdao"/>
+         </entry>
+       
+       </map>
+       
+      </property>
+      <property name="pro">
+        <props>
+          <prop key="k1">kkkkk</prop>
+          <prop key="h1">hhhhh</prop>
+          <prop key="j1">jjjjj</prop>
+        
+        </props>
+      
+      
+      </property>
+     </bean>
+     <bean id="userservice2" class="com.bjsxt.serviceimp.ServiceImp">
+      <constructor-arg ref="userdao"></constructor-arg>
+     </bean>
+     <!-- 无论是bytype  还是byname  一定要背管理的对象纳入 spring容器中。 -->
+     <bean id="userdao1" class="com.bjsxt.daoimp.UserDao1Imp"></bean>
+     <bean id="userdao2" class="com.bjsxt.daoimp.UserDao1_1Imp"></bean>
+     <!-- byType的属性的类型 最好是具体子类、否则不能确定  到底是哪一个类。 -->
+   <!--    <bean id="userservice3" class="com.bjsxt.serviceimp.ServiceDao1Imp" autowire="byType"></bean>-->
+    <!-- 这里的注入方式是byname  属性名和id  相同   id=name -->
+     <bean id="userservice4" class="com.bjsxt.serviceimp.ServiceDao2Imp" autowire="byName"></bean>
+	</beans>

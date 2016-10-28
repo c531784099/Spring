@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"	
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	">
+	<context:component-scan base-package="com.bjsxt.aop"></context:component-scan>
+	<!-- 前置通知  实现相应接口-->
+	<bean id="daolog" class="com.bjsxt.aop.DaoLogHead"></bean>
+	<!-- 后置通知  实现相应接口 -->
+    <bean id="daologafter" class="com.bjsxt.aop.DaoLogAfter"></bean>
+    <!-- 环绕通知 -->
+    <bean id="daoLogAround" class="com.bjsxt.aop.DaoLogAround"></bean>
+    <!-- 异常通知 -->
+    <bean id="daoLogException" class="com.bjsxt.aop.DaoLogExceptiom"></bean>
+   <!-- 这里的aop的增强对应的是  实现对应的接口、实现相应的方法 xml方式、还有注解的方式 -->
+	<aop:config>
+	  <aop:pointcut expression="execution(* com.bjsxt.aop.*.*(..))" id="pointcut1"/>
+	  <aop:advisor advice-ref="daolog" pointcut-ref="pointcut1"/>
+	  <aop:advisor advice-ref="daologafter" pointcut-ref="pointcut1"/>
+	  <aop:advisor advice-ref="daoLogAround" pointcut-ref="pointcut1"/>
+	  <aop:advisor advice-ref="daoLogException" pointcut-ref="pointcut1"/>
+	</aop:config>
+	
+	</beans>
